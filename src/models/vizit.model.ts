@@ -17,5 +17,5 @@ export class Vizit extends Model<Vizit> {
     @Column
     hospitalId: number
 
-    @Column titleText: string
+    @Column text: string
 }

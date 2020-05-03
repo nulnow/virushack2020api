@@ -73,6 +73,23 @@ export class ApiController implements OnGatewayConnection, OnGatewayDisconnect {
         `
     }
 
+    @Get('/vizits')
+    async vizits() {
+        return `
+            <pre>
+            ${JSON.stringify(
+                {
+                    users: await this.vizitModel.findAll({
+                        //include: [Ill],
+                    }),
+                },
+                null,
+                4,
+            )}
+            </pre>
+        `
+    }
+
     // @Get('/get')
     // async get(@Query('key') key: string): Promise<string> {
     //     return 'gotten: ' + (await this.redisService.get(key))

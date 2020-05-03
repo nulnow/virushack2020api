@@ -23,6 +23,9 @@ export class User extends Model<User> {
     @Column polis: string
     @Column passport: string
 
+    @HasMany(() => Vizit)
+    vizits: Vizit[]
+
     @HasMany(() => Ill)
-    vizits: Ill[]
+    ills: Ill[]
 }
