@@ -1,4 +1,4 @@
-import { Column, ForeignKey, Model, Table } from 'sequelize-typescript'
+import { Column, ForeignKey, HasOne, Model, Table } from 'sequelize-typescript'
 import { Location } from './location.model'
 
 @Table
@@ -8,4 +8,7 @@ export class Hospital extends Model<Hospital> {
     locationId: number
 
     @Column title: string
+
+    // @HasOne(() => Location)
+    // location: Location
 }

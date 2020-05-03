@@ -58,9 +58,19 @@ export class ApiController implements OnGatewayConnection, OnGatewayDisconnect {
 
     @Get('/supreme')
     async supreme() {
-        return {
-            users: await this.userModel.findAll({ include: [Ill] }),
-        }
+        return `
+            <pre>
+            ${JSON.stringify(
+                {
+                    users: await this.userModel.findAll({
+                        include: [Ill],
+                    }),
+                },
+                null,
+                4,
+            )}
+            </pre>
+        `
     }
 
     // @Get('/get')
