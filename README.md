@@ -24,3 +24,9 @@ $ npm install
 $ npm run start
 ```
 
+
+## Ссылки
+
+- Презентация - [Ссылка](https://virushack2020.nulnow.com/presentation.pptx)
+- Видео - [Ссылка](https://virushack2020.nulnow.com/video.mp4)
+
