@@ -15,6 +15,6 @@ export class Ill extends Model<Ill> {
     text: string
     @Column recommendations: string
 
-    // @HasMany(() => Vizit)
-    // vizits: Vizit[]
+    @HasMany(() => Vizit)
+    vizits: Vizit[]
 }

@@ -123,7 +123,7 @@ export class ApiController implements OnGatewayConnection, OnGatewayDisconnect {
                     model: Ill,
                     include: [Vizit],
                 },
-                Vizit,
+                // Vizit,
             ],
         })
     }
