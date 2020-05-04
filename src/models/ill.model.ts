@@ -1,15 +1,20 @@
-import { Column, ForeignKey, Model, Table } from 'sequelize-typescript'
+import { Column, ForeignKey, HasMany, Model, Table } from 'sequelize-typescript'
 import { User } from './user.model'
+import { Vizit } from './vizit.model'
+import { ApiProperty } from '@nestjs/swagger'
 
 @Table
 export class Ill extends Model<Ill> {
+    @ApiProperty({ type: () => User })
     @ForeignKey(() => User)
     @Column
     userId: number
 
-    @Column text: string
+    @ApiProperty({ type: String })
+    @Column
+    text: string
     @Column recommendations: string
 
-    // @BelongsTo(() => Hospital)
-    // hospital: Hospital
+    // @HasMany(() => Vizit)
+    // vizits: Vizit[]
 }

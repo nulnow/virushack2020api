@@ -14,6 +14,7 @@ import { Location } from './models/location.model'
 import { Hospital } from './models/hospital.modal'
 import { Recipe } from './models/recipe.model'
 import { Vizit } from './models/vizit.model'
+import { AppGateway } from './app.gateway'
 
 @Module({
     imports: [
@@ -50,6 +51,6 @@ import { Vizit } from './models/vizit.model'
         ]),
     ],
     controllers: [AppController, ApiController],
-    providers: [AppService, TokensService],
+    providers: [AppService, TokensService, AppGateway],
 })
 export class AppModule {}

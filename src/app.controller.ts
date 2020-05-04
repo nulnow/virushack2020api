@@ -34,6 +34,10 @@ export class AppController implements OnGatewayConnection, OnGatewayDisconnect {
     @Render('index')
     index() {}
 
+    @Get('/chat')
+    @Render('chat')
+    chat() {}
+
     handleConnection(client: Socket, ...args: any[]): any {}
 
     handleDisconnect(client: Socket): any {}

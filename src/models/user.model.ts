@@ -8,24 +8,27 @@ import {
 } from 'sequelize-typescript'
 import { Vizit } from './vizit.model'
 import { Ill } from './ill.model'
+import { ApiProperty } from '@nestjs/swagger'
 
 @Table
 export class User extends Model<User> {
     @Column firstName: string
 
-    @Column lastName: string
-    @Column middleName: string
-    @Column guid: string
-    @Column email: string
-    @Column password: string
-    @Column phone: string
-    @Column snils: string
-    @Column polis: string
-    @Column passport: string
+    @ApiProperty() @Column lastName: string
+    @ApiProperty() @Column middleName: string
+    @ApiProperty() @Column guid: string
+    @ApiProperty() @Column email: string
+    @ApiProperty() @Column password: string
+    @ApiProperty() @Column phone: string
+    @ApiProperty() @Column snils: string
+    @ApiProperty() @Column polis: string
+    @ApiProperty() @Column passport: string
 
+    @ApiProperty({ type: () => Vizit })
     @HasMany(() => Vizit)
     vizits: Vizit[]
 
+    @ApiProperty({ type: () => Ill })
     @HasMany(() => Ill)
     ills: Ill[]
 }
