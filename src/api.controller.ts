@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common'
+import {
+    Body,
+    Controller,
+    Get,
+    HttpException,
+    HttpStatus,
+    Post,
+    Query,
+    UseGuards,
+} from '@nestjs/common'
 import { MESSAGES_TYPES } from './CONSTANTS/MESSATES_TYPES'
 import { AuthGuard } from './auth.guard'
 import { AppService } from './app.service'
@@ -113,8 +122,13 @@ export class ApiController implements OnGatewayConnection, OnGatewayDisconnect {
         type: AuthResponseDto,
     })
     async login(@Body() loginDto: LoginDto): Promise<AuthResponseDto> {
+        const user = await this.userModel.findOne({
+            where: { email: loginDto.email },
+        })
+        if (!user)
+            throw new HttpException('Неправильно', HttpStatus.BAD_REQUEST)
         return {
-            access_token: 'fesf2',
+            access_token: user.id,
         }
     }
 
@@ -123,8 +137,18 @@ export class ApiController implements OnGatewayConnection, OnGatewayDisconnect {
         type: AuthResponseDto,
     })
     async register(@Body() registerDto: RegisterDto): Promise<AuthResponseDto> {
+        const userWithThisEmail = await this.userModel.findOne({
+            where: { email: registerDto.email },
+        })
+        if (userWithThisEmail) {
+            throw new HttpException(
+                'Уже есть пользователь с таким мейлом',
+                HttpStatus.BAD_REQUEST,
+            )
+        }
+        const newUser = await this.userModel.create(registerDto)
         return {
-            access_token: 'fesf',
+            access_token: newUser.id,
         }
     }
 

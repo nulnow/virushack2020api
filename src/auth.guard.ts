@@ -30,7 +30,7 @@ export class AuthGuard implements CanActivate {
         if (!token) {
             throw new UnauthorizedException()
         }
-        const userId = await this.tokensService.get(token)
+        const userId = token
         if (!userId) {
             throw new UnauthorizedException()
         }
