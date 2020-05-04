@@ -13,12 +13,11 @@ import { AuthGuard } from './auth.guard'
 import { User as UserDecorator } from './user.decorator'
 import { InjectModel } from '@nestjs/sequelize'
 import { User } from './models/user.model'
-import { on } from './events'
 import { MessageDto } from './dto/message.dto'
 import { Doctor } from './models/doctor.model'
 import { Message } from './models/message.model'
 import { Chat } from './models/chat.model'
-import { log } from 'util'
+import * as moment from 'moment'
 
 @WebSocketGateway()
 export class AppGateway
@@ -62,7 +61,7 @@ export class AppGateway
         }
         console.log({ mess })
         const message = await this.messageModel.create(mess)
-
+        const createdAt = moment(message.createdAt).format('HH:mm')
         client.emit(MESSAGES_TYPES.MESSAGE, {
             ...message.toJSON(),
             user: user.toJSON(),
@@ -70,6 +69,7 @@ export class AppGateway
             doctor: doctor.toJSON(),
             // @ts-ignore
             chat: chat.toJSON(),
+            createdAt,
         })
     }
 

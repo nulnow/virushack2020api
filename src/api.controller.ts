@@ -41,6 +41,7 @@ import { AuthResponseDto } from './dto/auth-response.dto'
 import { Chat } from './models/chat.model'
 import { Doctor } from './models/doctor.model'
 import { Message } from './models/message.model'
+import * as moment from 'moment'
 
 @Controller('/api')
 @WebSocketGateway(+(process.env.PORT || 6062), { namespace: 'events' })
@@ -150,12 +151,19 @@ export class ApiController {
     // })
     async messages(@UserDecorator() user, @Param('id') id: string) {
         const numberId = +id
-        const messages = await this.messageModel.findAll({
-            where: {
-                chatId: numberId,
-            },
-            include: [User, Doctor],
-        })
+        const messages = await this.messageModel
+            .findAll({
+                where: {
+                    chatId: numberId,
+                },
+                include: [User, Doctor],
+            })
+            .map(m => {
+                return {
+                    ...m.toJSON(),
+                    createdAt: moment(m.createdAt).format('HH:mm'),
+                }
+            })
         // const chats = await this.chatsModel.findAll({
         //     where: {
         //         userId: user.id,
