@@ -57,7 +57,7 @@ export class AppGateway
             content: messageDto.content,
             doctorId: doctor.id,
             userId: user.id,
-            ifFromUser: true,
+            isFromUser: true,
         }
         console.log({ mess })
         const message = await this.messageModel.create(mess)
