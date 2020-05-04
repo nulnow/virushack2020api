@@ -57,6 +57,7 @@ export class AppGateway
             content: messageDto.content,
             doctorId: doctor.id,
             userId: user.id,
+            createdAt: new Date(),
             isFromUser: true,
         }
         console.log({ mess })
