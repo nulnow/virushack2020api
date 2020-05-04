@@ -29,6 +29,8 @@
             <div id="status"></div>
             <div id="chat">
                 <input type="text" v-model="name" id="username" class="form-control" placeholder="Enter name...">
+                <input type="number" v-model="chatId" id="username" class="form-control" placeholder="Chat id">
+                <input type="number" v-model="token" id="username" class="form-control" placeholder="Token">
                 <br>
                 <div class="card">
                     <div id="messages" class="card-block">
@@ -41,6 +43,7 @@
                 <textarea id="textarea" class="form-control" v-model="text" placeholder="Enter message..."></textarea>
                 <br>
                 <button id="send" class="btn" @click.prevent="sendMessage">Send</button>
+                <button id="send" class="btn" @click.prevent="reloadChats">Reload</button>
             </div>
         </div>
     </div>
@@ -59,12 +62,14 @@
             name: '',
             text: '',
             messages: [],
-            socket: null
+            socket: null,
+            chatId: 3,
+            token: 3
         },
         methods: {
             sendMessage() {
                 const message = {
-                    chatId: 1,
+                    chatId: this.chatId,
                     content: this.text
                 }
                 this.socket.emit(MESSAGES_TYPES.MESSAGE, message)
@@ -73,13 +78,17 @@
             receivedMessage(message) {
                 this.messages.push(message)
             },
+            reloadChats() {
+                fetch(`/api/messages/${this.chatId}?token=${this.token}`).then(r => r.json()).then(res => {
+                    this.messages = res
+                })
+            },
         },
+
         created() {
-            fetch('/api/messages/1?token=1').then(r => r.json()).then(res => {
-                this.messages = res
-            })
+            this.reloadChats()
             this.socket = io()
-            this.socket.emit('AUTH', { token: 1 })
+            this.socket.emit('AUTH', { token: 3 })
             this.socket.on(MESSAGES_TYPES.MESSAGE, (message) => {
                 this.receivedMessage(message)
             })
