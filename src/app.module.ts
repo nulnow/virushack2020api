@@ -17,6 +17,7 @@ import { Vizit } from './models/vizit.model'
 import { AppGateway } from './app.gateway'
 import { Message } from './models/message.model'
 import { Doctor } from './models/doctor.model'
+import { Chat } from './models/chat.model'
 
 @Module({
     imports: [
@@ -60,6 +61,9 @@ import { Doctor } from './models/doctor.model'
             Location,
             Hospital,
             Recipe,
+            Message,
+            Chat,
+            Doctor,
         ]),
     ],
     controllers: [AppController, ApiController],

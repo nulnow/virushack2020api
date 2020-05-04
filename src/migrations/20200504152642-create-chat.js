@@ -14,7 +14,12 @@ module.exports = {
             doctorId: {
                 type: Sequelize.INTEGER,
             },
-
+            createdAt: {
+                type: Sequelize.DATE,
+            },
+            updatedAt: {
+                type: Sequelize.DATE,
+            },
         })
     },
     down: (queryInterface, Sequelize) => {

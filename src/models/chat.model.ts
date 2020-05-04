@@ -2,6 +2,7 @@ import {
     BelongsTo,
     BelongsToMany,
     Column,
+    ForeignKey,
     HasMany,
     Model,
     Table,
@@ -9,22 +10,27 @@ import {
 import { Vizit } from './vizit.model'
 import { Ill } from './ill.model'
 import { ApiProperty } from '@nestjs/swagger'
+import { Doctor } from './doctor.model'
+import { Location } from './location.model'
+import { User } from './user.model'
 
 @Table
 export class Chat extends Model<Chat> {
-    @Column firstName: string
+    @ForeignKey(() => User)
+    @ApiProperty()
+    @Column
+    userId: string
 
-    @ApiProperty() @Column content: string
-    @ApiProperty() @Column userId: string
-    @ApiProperty() @Column chatId: string
-    @ApiProperty() @Column doctorId: string
-    @ApiProperty() @Column isFromUser: boolean
+    @ForeignKey(() => Doctor)
+    @ApiProperty()
+    @Column
+    doctorId: string
 
-    // @ApiProperty({ type: () => Vizit })
-    // @HasMany(() => Vizit)
-    // vizits: Vizit[]
-    //
-    // @ApiProperty({ type: () => Ill })
-    // @HasMany(() => Ill)
-    // ills: Ill[]
+    @ApiProperty({ type: () => Doctor })
+    @BelongsTo(() => Doctor)
+    doctor: Doctor
+
+    @ApiProperty({ type: () => User })
+    @BelongsTo(() => User)
+    user: User
 }

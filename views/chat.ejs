@@ -33,7 +33,7 @@
                 <div class="card">
                     <div id="messages" class="card-block">
                         <ul>
-                            <li v-for="message of messages">{{ message.name }}: {{ message.text }}</li>
+                            <li v-for="message of messages">{{ message.isFromUser ? message.user.firstName : message.doctor.name }}: {{ message.content }}</li>
                         </ul>
                     </div>
                 </div>
@@ -55,7 +55,7 @@
     const app = new Vue({
         el: '#app',
         data: {
-            title: 'Nestjs Websockets Chat',
+            title: 'DoctorChat',
             name: '',
             text: '',
             messages: [],
@@ -63,24 +63,23 @@
         },
         methods: {
             sendMessage() {
-                if(this.validateInput()) {
-                    const message = {
-                        name: this.name,
-                        text: this.text
-                    }
-                    this.socket.emit(MESSAGES_TYPES.MESSAGE, message)
-                    this.text = ''
+                const message = {
+                    chatId: 1,
+                    content: this.text
                 }
+                this.socket.emit(MESSAGES_TYPES.MESSAGE, message)
+                this.text = ''
             },
             receivedMessage(message) {
                 this.messages.push(message)
             },
-            validateInput() {
-                return this.name.length > 0 && this.text.length > 0
-            }
         },
         created() {
-            this.socket = io('/?token=1')
+            fetch('/api/messages/1?token=1').then(r => r.json()).then(res => {
+                this.messages = res
+            })
+            this.socket = io()
+            this.socket.emit('AUTH', { token: 1 })
             this.socket.on(MESSAGES_TYPES.MESSAGE, (message) => {
                 this.receivedMessage(message)
             })

@@ -22,7 +22,13 @@ module.exports = {
             },
             isFromUser: {
                 type: Sequelize.BOOLEAN,
-            }
+            },
+            createdAt: {
+                type: Sequelize.DATE,
+            },
+            updatedAt: {
+                type: Sequelize.DATE,
+            },
         })
     },
     down: (queryInterface, Sequelize) => {

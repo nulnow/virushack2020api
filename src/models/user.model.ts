@@ -9,6 +9,7 @@ import {
 import { Vizit } from './vizit.model'
 import { Ill } from './ill.model'
 import { ApiProperty } from '@nestjs/swagger'
+import { Chat } from './chat.model'
 
 @Table
 export class User extends Model<User> {
@@ -31,4 +32,8 @@ export class User extends Model<User> {
     @ApiProperty({ type: () => Ill })
     @HasMany(() => Ill)
     ills: Ill[]
+
+    @ApiProperty({ type: () => Chat })
+    @HasMany(() => Chat)
+    chats: Chat[]
 }

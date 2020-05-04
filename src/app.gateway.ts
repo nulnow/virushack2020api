@@ -15,6 +15,10 @@ import { InjectModel } from '@nestjs/sequelize'
 import { User } from './models/user.model'
 import { on } from './events'
 import { MessageDto } from './dto/message.dto'
+import { Doctor } from './models/doctor.model'
+import { Message } from './models/message.model'
+import { Chat } from './models/chat.model'
+import { log } from 'util'
 
 @WebSocketGateway()
 export class AppGateway
@@ -27,21 +31,51 @@ export class AppGateway
     constructor(
         @InjectModel(User)
         private userModel: typeof User,
-    ) {
-        // on('message', (data) => {
-        //
-        // })
-    }
 
-    @UseGuards(AuthGuard)
+        @InjectModel(Doctor)
+        private doctorModel: typeof Doctor,
+
+        @InjectModel(Message)
+        private messageModel: typeof Message,
+
+        @InjectModel(Chat)
+        private chatModel: typeof Chat,
+    ) {}
+
     @SubscribeMessage(MESSAGES_TYPES.MESSAGE)
-    handleMessage(client: Socket, messageDto: MessageDto): void {
-        this.server.emit(MESSAGES_TYPES.MESSAGE, payload)
+    async handleMessage(client: Socket, messageDto: MessageDto) {
+        console.log({ messageDto })
+        const chat = await this.chatModel.findByPk(+messageDto.chatId)
+        console.log({ chat })
+        const doctor = await this.doctorModel.findByPk(1)
+        console.log({ doctor })
+        // @ts-ignore
+        const user: any = client.user
+
+        const mess = {
+            chatId: chat.id,
+            content: messageDto.content,
+            doctorId: doctor.id,
+            userId: user.id,
+            ifFromUser: true,
+        }
+        console.log({ mess })
+        const message = await this.messageModel.create(mess)
+
+        client.emit(MESSAGES_TYPES.MESSAGE, {
+            ...message.toJSON(),
+            user: user.toJSON(),
+            // @ts-ignore
+            doctor: doctor.toJSON(),
+            // @ts-ignore
+            chat: chat.toJSON(),
+        })
     }
 
     @SubscribeMessage('AUTH')
-    async auth(client: Socket, payload: string) {
-        const user = this.userModel.findByPk(+payload)
+    async auth(client: Socket, payload: any) {
+        const user = await this.userModel.findByPk(+payload.token)
+
         // @ts-ignore
         client.user = user
     }

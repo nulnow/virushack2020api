@@ -4,6 +4,7 @@ import {
     Get,
     HttpException,
     HttpStatus,
+    Param,
     Post,
     Query,
     UseGuards,
@@ -37,10 +38,13 @@ import { ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger'
 import { LoginDto } from './dto/login.dto'
 import { RegisterDto } from './dto/register.dto'
 import { AuthResponseDto } from './dto/auth-response.dto'
+import { Chat } from './models/chat.model'
+import { Doctor } from './models/doctor.model'
+import { Message } from './models/message.model'
 
 @Controller('/api')
 @WebSocketGateway(+(process.env.PORT || 6062), { namespace: 'events' })
-export class ApiController implements OnGatewayConnection, OnGatewayDisconnect {
+export class ApiController {
     @WebSocketServer()
     private readonly server: Server
 
@@ -67,6 +71,15 @@ export class ApiController implements OnGatewayConnection, OnGatewayDisconnect {
 
         @InjectModel(Location)
         private locationModel: typeof Location,
+
+        @InjectModel(Doctor)
+        private doctorModel: typeof Doctor,
+
+        @InjectModel(Message)
+        private messageModel: typeof Message,
+
+        @InjectModel(Chat)
+        private chatsModel: typeof Chat,
     ) {}
 
     @SubscribeMessage(MESSAGES_TYPES.MESSAGE)
@@ -79,33 +92,6 @@ export class ApiController implements OnGatewayConnection, OnGatewayDisconnect {
         return this.server.emit('message', {
             text: 'hello',
         })
-    }
-
-    handleConnection(client: Socket, ...args: any[]): any {}
-
-    handleDisconnect(client: Socket): any {}
-
-    @Get('/supreme')
-    async supreme() {
-        return `
-            <pre>
-            ${JSON.stringify(
-                {
-                    users: await this.userModel.findAll({
-                        include: [
-                            {
-                                model: Ill,
-                                include: [Vizit],
-                            },
-                            Vizit,
-                        ],
-                    }),
-                },
-                null,
-                4,
-            )}
-            </pre>
-        `.trim()
     }
 
     @UseGuards(AuthGuard)
@@ -131,6 +117,61 @@ export class ApiController implements OnGatewayConnection, OnGatewayDisconnect {
                 // Vizit,
             ],
         })
+    }
+
+    @UseGuards(AuthGuard)
+    @Get('/chats')
+    // @ApiOkResponse({
+    //     type: User,
+    // })
+    async chats(@UserDecorator() user) {
+        const chats = await this.chatsModel.findAll({
+            where: {
+                userId: user.id,
+            },
+            include: [User, Doctor],
+        })
+        // let toReturn
+        // // todo переделать
+        // for (let chat of chats) {
+        //     const lastMessage = await this.messageModel.findAll({
+        //         where: {
+        //
+        //         }
+        //     })
+        // }
+        return chats
+    }
+
+    @UseGuards(AuthGuard)
+    @Get('/messages/:id')
+    // @ApiOkResponse({
+    //     type: User,
+    // })
+    async messages(@UserDecorator() user, @Param('id') id: string) {
+        const numberId = +id
+        const messages = await this.messageModel.findAll({
+            where: {
+                chatId: numberId,
+            },
+            include: [User, Doctor],
+        })
+        // const chats = await this.chatsModel.findAll({
+        //     where: {
+        //         userId: user.id,
+        //     },
+        //     include: [User, Doctor],
+        // })
+        // let toReturn
+        // // todo переделать
+        // for (let chat of chats) {
+        //     const lastMessage = await this.messageModel.findAll({
+        //         where: {
+        //
+        //         }
+        //     })
+        // }
+        return messages
     }
 
     @Post('/login')
