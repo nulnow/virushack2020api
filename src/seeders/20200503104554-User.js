@@ -25,7 +25,6 @@ module.exports = {
             guid: 'dwadawdaw',
             password: 'secret2',
         }, {
-            "id": 11,
             "firstName": "Василий",
             "lastName": "Протонов",
             "middleName": "Юрьевич",
@@ -40,7 +39,6 @@ module.exports = {
             "updatedAt": null
         },
             {
-                "id": 6,
                 "firstName": "Даниил",
                 "lastName": "Коратаев",
                 "middleName": "Андреевич",
@@ -55,7 +53,6 @@ module.exports = {
                 "updatedAt": null
             },
             {
-                "id": 7,
                 "firstName": "Аркадий",
                 "lastName": "Паровозов",
                 "middleName": "",
@@ -70,7 +67,6 @@ module.exports = {
                 "updatedAt": null
             },
             {
-                "id": 3,
                 "firstName": "Даниил",
                 "lastName": "Мартышкин",
                 "middleName": "",
@@ -85,7 +81,6 @@ module.exports = {
                 "updatedAt": null
             },
             {
-                "id": 5,
                 "firstName": "Владимир",
                 "lastName": "Поехавший",
                 "middleName": "",
@@ -100,7 +95,6 @@ module.exports = {
                 "updatedAt": null
             },
             {
-                "id": 8,
                 "firstName": "Паша",
                 "lastName": "Бумчек",
                 "middleName": "Геннадьевич",
@@ -115,7 +109,6 @@ module.exports = {
                 "updatedAt": null
             },
             {
-                "id": 4,
                 "firstName": "Анатолий",
                 "lastName": "Власов",
                 "middleName": "Юрьевич",
@@ -130,7 +123,6 @@ module.exports = {
                 "updatedAt": null
             },
             {
-                "id": 9,
                 "firstName": "Никита",
                 "lastName": "Буерак",
                 "middleName": "Ильич",
@@ -145,7 +137,6 @@ module.exports = {
                 "updatedAt": null
             },
             {
-                "id": 10,
                 "firstName": "Василий",
                 "lastName": "Протонов",
                 "middleName": "Юрьевич",
@@ -160,7 +151,6 @@ module.exports = {
                 "updatedAt": null
             },
             {
-                "id": 12,
                 "firstName": "Платон",
                 "lastName": "Шугейз",
                 "middleName": "Даниилович",
@@ -175,7 +165,6 @@ module.exports = {
                 "updatedAt": null
             },
             {
-                "id": 13,
                 "firstName": "Иван",
                 "lastName": "Зизюля",
                 "middleName": "Ильич",
@@ -190,7 +179,6 @@ module.exports = {
                 "updatedAt": null
             },
             {
-                "id": 14,
                 "firstName": "Аркадий",
                 "lastName": "Марков",
                 "middleName": "Игнатьевич",
@@ -205,7 +193,6 @@ module.exports = {
                 "updatedAt": null
             },
             {
-                "id": 15,
                 "firstName": "Иван",
                 "lastName": "Иванов",
                 "middleName": "Иванович",
@@ -220,7 +207,6 @@ module.exports = {
                 "updatedAt": null
             },
             {
-                "id": 16,
                 "firstName": "Александр",
                 "lastName": "Шпак",
                 "middleName": "Антон-Чехов",
@@ -235,7 +221,6 @@ module.exports = {
                 "updatedAt": null
             },
             {
-                "id": 17,
                 "firstName": "Ольга",
                 "lastName": "Крымова",
                 "middleName": "Анатольевна",
@@ -250,7 +235,6 @@ module.exports = {
                 "updatedAt": null
             },
             {
-                "id": 18,
                 "firstName": "Алиса",
                 "lastName": "Овалова",
                 "middleName": "Викторовна",
@@ -265,7 +249,6 @@ module.exports = {
                 "updatedAt": null
             },
             {
-                "id": 19,
                 "firstName": "Ирина",
                 "lastName": "Богомолова",
                 "middleName": "Никитична",
@@ -280,7 +263,6 @@ module.exports = {
                 "updatedAt": null
             },
             {
-                "id": 20,
                 "firstName": "Любовь",
                 "lastName": "Попова",
                 "middleName": "Олеговна",
@@ -295,7 +277,6 @@ module.exports = {
                 "updatedAt": null
             },
             {
-                "id": 21,
                 "firstName": "Анастасия",
                 "lastName": "Модоворова",
                 "middleName": "Евангельевна",
