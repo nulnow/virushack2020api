@@ -9,6 +9,13 @@ export const User = createParamDecorator(
     async (data: unknown, ctx: ExecutionContext) => {
         const request: Request = ctx.switchToHttp().getRequest()
 
+        console.log('AuthGuard canActivate')
+        console.log({
+            // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+            // @ts-ignore
+            user: request.user,
+        })
+
         // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
         // @ts-ignore
         return request.user

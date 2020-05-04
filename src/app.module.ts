@@ -15,6 +15,8 @@ import { Hospital } from './models/hospital.modal'
 import { Recipe } from './models/recipe.model'
 import { Vizit } from './models/vizit.model'
 import { AppGateway } from './app.gateway'
+import { Message } from './models/message.model'
+import { Doctor } from './models/doctor.model'
 
 @Module({
     imports: [
@@ -38,7 +40,17 @@ import { AppGateway } from './app.gateway'
             username: 'ahtvaiue',
             password: 'kEP9L4gWSDFQf9NBt6-_uBAStgDh8_5C',
             database: 'ahtvaiue',
-            models: [User, Ill, Vizit, Location, Hospital, Recipe],
+            models: [
+                User,
+                Ill,
+                Vizit,
+                Location,
+                Hospital,
+                Recipe,
+                Message,
+                Chat,
+                Doctor,
+            ],
             synchronize: true,
         }),
         SequelizeModule.forFeature([

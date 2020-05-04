@@ -80,7 +80,7 @@
             }
         },
         created() {
-            this.socket = io()
+            this.socket = io('/?token=1')
             this.socket.on(MESSAGES_TYPES.MESSAGE, (message) => {
                 this.receivedMessage(message)
             })
