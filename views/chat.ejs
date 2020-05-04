@@ -79,7 +79,6 @@
                 this.messages.push(message)
             },
             reloadChats() {
-                this.reloadChats()
                 this.socket = io()
                 this.socket.emit('AUTH', { token: 1 })
                 this.socket.on(MESSAGES_TYPES.MESSAGE, (message) => {
