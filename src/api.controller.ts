@@ -121,7 +121,7 @@ export class ApiController implements OnGatewayConnection, OnGatewayDisconnect {
             include: [
                 {
                     model: Ill,
-                    include: [Vizit],
+                    include: [{ model: Vizit, include: [Hospital] }],
                 },
                 // Vizit,
             ],

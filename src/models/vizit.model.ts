@@ -5,6 +5,7 @@ import {
     ForeignKey,
     HasMany,
     HasOne,
+    BelongsTo,
 } from 'sequelize-typescript'
 import { User } from './user.model'
 import { Ill } from './ill.model'
@@ -31,6 +32,9 @@ export class Vizit extends Model<Vizit> {
     @ApiProperty({ type: String })
     @Column
     text: string
+
+    @BelongsTo(() => Hospital)
+    hospital: Hospital
 
     // @ApiProperty({ type: () => Ill })
     // @HasOne(() => Ill)
