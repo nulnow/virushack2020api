@@ -123,8 +123,24 @@ export class ApiController implements OnGatewayConnection, OnGatewayDisconnect {
     })
     async login(@Body() loginDto: LoginDto): Promise<AuthResponseDto> {
         const user = await this.userModel.findOne({
-            where: { email: loginDto.email },
+            where: { email: (loginDto.email || '').trim() },
         })
+        if (!user)
+            throw new HttpException('Неправильно', HttpStatus.BAD_REQUEST)
+        return {
+            access_token: user.id,
+        }
+    }
+
+    @Get('/login')
+    @ApiOkResponse({
+        type: AuthResponseDto,
+    })
+    async getLogin(@Query('email') email): Promise<AuthResponseDto> {
+        const user = await this.userModel.findOne({
+            where: { email: email.trim() },
+        })
+
         if (!user)
             throw new HttpException('Неправильно', HttpStatus.BAD_REQUEST)
         return {
