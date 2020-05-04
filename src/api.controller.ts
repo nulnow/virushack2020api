@@ -26,7 +26,7 @@ import {
 } from '@nestjs/websockets'
 import { Server, Socket } from 'socket.io'
 
-import { InjectModel } from '@nestjs/sequelize'
+import { InjectConnection, InjectModel } from '@nestjs/sequelize'
 import { Ill } from './models/ill.model'
 import { Location } from './models/location.model'
 import { Hospital } from './models/hospital.modal'
@@ -42,6 +42,7 @@ import { Chat } from './models/chat.model'
 import { Doctor } from './models/doctor.model'
 import { Message } from './models/message.model'
 import * as moment from 'moment'
+import { Sequelize } from 'sequelize-typescript'
 
 @Controller('/api')
 @WebSocketGateway(+(process.env.PORT || 6062), { namespace: 'events' })
@@ -81,6 +82,8 @@ export class ApiController {
 
         @InjectModel(Chat)
         private chatsModel: typeof Chat,
+
+        @InjectConnection() private connection: Sequelize,
     ) {}
 
     @SubscribeMessage(MESSAGES_TYPES.MESSAGE)
@@ -92,6 +95,23 @@ export class ApiController {
     ) {
         return this.server.emit('message', {
             text: 'hello',
+        })
+    }
+
+    @Get('/info')
+    async info() {
+        return this.locationModel.findAll({
+            include: [
+                {
+                    model: Hospital,
+                    include: [
+                        {
+                            model: Vizit,
+                            include: [Ill],
+                        },
+                    ],
+                },
+            ],
         })
     }
 
@@ -233,45 +253,45 @@ export class ApiController {
         }
     }
 
-    @Get('/vizits')
-    async vizits(): Promise<Vizit[]> {
-        return this.vizitModel.findAll({
-            include: [Ill],
-        })
-    }
-
-    @Get('/hospitals')
-    @ApiOkResponse({
-        type: Hospital,
-    })
-    async hospitals(): Promise<Hospital[]> {
-        return this.hospitalModel.findAll({
-            include: [Location],
-        })
-    }
-
-    @Get('/get')
-    async get(@Query('key') key: string): Promise<string> {
-        return 'gotten: ' + (await this.redisService.get(key))
-    }
-
-    @Get('/set')
-    async set(
-        @Query('key') key: string,
-        @Query('value') value: string,
-    ): Promise<string> {
-        await this.redisService.set(key, value)
-        return 'set: ' + (await this.redisService.get(key))
-    }
-
-    @Get('/setToken')
-    async setToken(
-        @Query('key') key: string,
-        @Query('value') value: string,
-    ): Promise<string> {
-        await this.tokensService.set(key, +value)
-        return 'set: ' + (await this.tokensService.get(key))
-    }
+    // @Get('/vizits')
+    // async vizits(): Promise<Vizit[]> {
+    //     return this.vizitModel.findAll({
+    //         include: [Ill],
+    //     })
+    // }
+    //
+    // @Get('/hospitals')
+    // @ApiOkResponse({
+    //     type: Hospital,
+    // })
+    // async hospitals(): Promise<Hospital[]> {
+    //     return this.hospitalModel.findAll({
+    //         include: [Location],
+    //     })
+    // }
+    //
+    // @Get('/get')
+    // async get(@Query('key') key: string): Promise<string> {
+    //     return 'gotten: ' + (await this.redisService.get(key))
+    // }
+    //
+    // @Get('/set')
+    // async set(
+    //     @Query('key') key: string,
+    //     @Query('value') value: string,
+    // ): Promise<string> {
+    //     await this.redisService.set(key, value)
+    //     return 'set: ' + (await this.redisService.get(key))
+    // }
+    //
+    // @Get('/setToken')
+    // async setToken(
+    //     @Query('key') key: string,
+    //     @Query('value') value: string,
+    // ): Promise<string> {
+    //     await this.tokensService.set(key, +value)
+    //     return 'set: ' + (await this.tokensService.get(key))
+    // }
 
     // @Get('/secret')
     // @UseGuards(AuthGuard)

@@ -8,7 +8,7 @@ module.exports = {
       recommendations: 'Сидеть дома',
     }, {
       userId: 2,
-      text: 'Кек',
+      text: 'Коронавирус',
       recommendations: 'Сидеть дома 2',
     },
       {

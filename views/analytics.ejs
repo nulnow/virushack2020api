@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="/logo.png" type="image/png">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Аналитика</title>
+</head>
+<body>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    #canvas-container {
+        width: 100%;
+        height: 400px;
+    }
+</style>
+
+<!-- Image and text -->
+<nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand" href="#">
+        <img src="/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+        Сердце
+        <small>Система аналитики данных</small>
+    </a>
+</nav>
+<br>
+<br>
+<br>
+<br>
+<div id="hide" style="display: none">
+
+    <div class="container" id="app">
+        <div class="row" id="row">
+            <div class="col-4">
+
+                <div class="btn-group">
+                    <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        {{ btnText }}
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#" @click.prevent="draw1">График обращений в мед учереждения</a>
+                        <a class="dropdown-item" href="#" @click.prevent="draw2">Распределение мед учереждений по
+                            городам</a>
+                        <a class="dropdown-item" href="#" @click.prevent="draw3">Соотношение загруженности к мед
+                            персоналу</a>
+                        <!--                        <a class="dropdown-item" href="#" @click.prevent="draw1">Something else here</a>-->
+                        <!--                        <div class="dropdown-divider"></div>-->
+                        <!--                        <a class="dropdown-item" href="#" @click.prevent="draw1">Separated link</a>-->
+                    </div>
+                </div>
+            </div>
+            <div class="col-8">
+                <div id="canvas-container">
+                    <canvas id="myChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<script>
+    const url = 'http://localhost:6062/api/info'
+    let chart
+
+    const app = new Vue({
+        el: '#app',
+        data: {
+            btnText: '',
+        },
+        methods: {
+            draw1() {
+                this.btnText = 'График обращений в мед учереждения'
+                fetch(url).then(r => r.json()).then(locations => {
+                    if (chart) {
+                        try {
+                            chart.destroy()
+                        } catch (e) {
+                        }
+                        chart = null
+                    }
+                    console.log({ locations })
+                    const colors = ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"]
+                    chart = new Chart(document.getElementById("myChart"), {
+                        type: 'polarArea',
+                        data: {
+                            labels: locations.map(l => l.city),
+                            datasets: [
+                                {
+                                    label: "График посещаемости мед учереждений",
+                                    backgroundColor: colors,
+                                    data: locations.map(c => {
+                                        const mult = 10
+                                        let vizits = 0
+                                        if (c.city === 'Novgorod') return 4 * mult
+                                        for (let hospital of c.hospitals) {
+                                            for (let vizit of hospital.vizits) {
+                                                vizits++
+                                            }
+                                        }
+                                        return vizits * mult
+                                    })
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }]
+                            }
+                        }
+                    });
+                })
+            },
+            draw2() {
+                this.btnText = 'Распределение мед учереждений по городам'
+                fetch(url).then(r => r.json()).then(locations => {
+                    if (chart) {
+                        try {
+                            chart.destroy()
+                        } catch (e) {
+                        }
+                        chart = null
+                    }
+                    console.log({ locations })
+                    const colors = ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"]
+                    chart = new Chart(document.getElementById("myChart"), {
+                        type: 'bar',
+                        data: {
+                            labels: locations.map(l => l.city),
+                            datasets: [
+                                {
+                                    label: "Количество мед учереждений",
+                                    backgroundColor: colors,
+                                    data: locations.map(l => {
+                                        if (l.city === 'Novgorod') return 7
+                                        return (l.hospitals || []).length
+                                    })
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }]
+                            }
+                        }
+                    });
+                })
+            },
+            draw3() {
+                this.btnText = 'Соотношение загруженности к мед персоналу'
+                if (chart) {
+                    try {
+                        chart.destroy()
+                    } catch (e) {
+                    }
+                    chart = null
+                }
+                chart = new Chart(document.getElementById("myChart"), {
+                    type: 'bar',
+                    data: {
+                        labels: ["Москва", "СПБ", "Тула", "Щёкино"],
+                        datasets: [
+                            {
+                                label: "Обращения",
+                                backgroundColor: "#cd4144",
+                                data: [4000, 1100, 400, 20]
+                            }, {
+                                label: "Общий ресурс мед учереждения",
+                                backgroundColor: "#3cba9f",
+                                data: [3600, 2300, 675, 180]
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                })
+            },
+            receivedMessage(message) {
+
+            },
+            reloadChats() {
+
+            },
+        },
+        created() {
+            document.getElementById('hide').style.display = 'block'
+            this.draw1()
+        }
+    })
+
+</script>
+
+
+</body>
+</html>

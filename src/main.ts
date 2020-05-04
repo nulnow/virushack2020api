@@ -6,9 +6,11 @@ import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
 import { join } from 'path'
 import * as morgan from 'morgan'
+import * as cors from 'cors'
 
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule)
+    app.use(cors())
     const options = new DocumentBuilder()
         .setTitle('Сердце')
         .setDescription('Swagger for Сердце app')

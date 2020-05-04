@@ -36,6 +36,9 @@ export class Vizit extends Model<Vizit> {
     @BelongsTo(() => Hospital)
     hospital: Hospital
 
+    @BelongsTo(() => Ill)
+    ill: Ill
+
     // @ApiProperty({ type: () => Ill })
     // @HasOne(() => Ill)
     // ill: Ill
