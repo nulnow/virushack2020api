@@ -8,9 +8,8 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
+<!--
 ## Описание
-
-<!-- [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository. -->
 
 ## Установка
 
@@ -24,9 +23,11 @@ $ npm install
 $ npm run start
 ```
 
+-->
 
 ## Ссылки
 
+- Сайт - [https://virushack2020.nulnow.com/](https://virushack2020.nulnow.com/)
 - Презентация - [Ссылка](https://virushack2020.nulnow.com/presentation.pptx)
 - Видео - [Ссылка](https://virushack2020.nulnow.com/video.mp4)
 
