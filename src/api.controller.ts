@@ -114,7 +114,18 @@ export class ApiController implements OnGatewayConnection, OnGatewayDisconnect {
         type: User,
     })
     async profile(@UserDecorator() user) {
-        return user
+        return this.userModel.findOne({
+            where: {
+                id: user.id,
+            },
+            include: [
+                {
+                    model: Ill,
+                    include: [Vizit],
+                },
+                Vizit,
+            ],
+        })
     }
 
     @Post('/login')
