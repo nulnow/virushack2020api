@@ -217,6 +217,16 @@ export class ApiController {
         }
     }
 
+    @Get('/timers')
+    async timers() {
+        return 'todo'
+    }
+
+    @Get('/events')
+    async events() {
+        return 'todo'
+    }
+
     @Get('/login')
     @ApiOkResponse({
         type: AuthResponseDto,
