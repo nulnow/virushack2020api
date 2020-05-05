@@ -140,6 +140,30 @@ export class ApiController {
         })
     }
 
+    @Get('/get-user-by-guid/:guid')
+    @ApiOkResponse({
+        type: User,
+    })
+    async getUserByGuid(@Param('guid') guid: string) {
+        return this.userModel.findOne({
+            where: {
+                guid,
+            },
+            include: [
+                {
+                    model: Ill,
+                    include: [
+                        {
+                            model: Vizit,
+                            include: [{ model: Hospital, include: [Location] }],
+                        },
+                    ],
+                },
+                // Vizit,
+            ],
+        })
+    }
+
     @UseGuards(AuthGuard)
     @Get('/chats')
     // @ApiOkResponse({
