@@ -28,6 +28,6 @@ $ npm run start
 ## Ссылки
 
 - Сайт - [https://virushack2020.nulnow.com/](https://virushack2020.nulnow.com/)
-- Презентация - [Ссылка](https://virushack2020.nulnow.com/presentation.pptx)
+- Презентация - [Ссылка](https://docs.google.com/presentation/d/1hGRyi9NYauJKIBfix85qJvxBHf67OKX72318u63Py1E/edit#slide=id.g5fea0672d6_0_11)
 - Видео - [Ссылка](https://virushack2020.nulnow.com/video.mp4)
 
